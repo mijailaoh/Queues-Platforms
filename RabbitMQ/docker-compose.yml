@@ -1,1 +1,11 @@
-.
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Puerto de conexión de RabbitMQ
+      - "15672:15672"  # Puerto de la interfaz de gestión de RabbitMQ
+    env_file:
+      - ./.env
