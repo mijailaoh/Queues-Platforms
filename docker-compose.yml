@@ -27,7 +27,7 @@ services:
       - "6222:6222" # cluster port
       - "8222:8222" # monitoring port
     volumes:
-      - ./nats.conf:/etc/nats/nats.conf
+      - ./Nats/nats.conf:/etc/nats/nats.conf
     networks:
       - monitor-net
 
