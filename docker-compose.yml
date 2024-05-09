@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    env_file:
+      - ./.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  nats:
+    image: nats:alpine
+    container_name: nats
+    restart: always
+    command: -c /etc/nats/nats.conf
+    ports:
+      - "4222:4222" # client port
+      - "6222:6222" # cluster port
+      - "8222:8222" # monitoring port
+    volumes:
+      - ./nats.conf:/etc/nats/nats.conf
+    networks:
+      - monitor-net
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Puerto de conexión de RabbitMQ
+      - "15672:15672"  # Puerto de la interfaz de gestión de RabbitMQ
+    env_file:
+      - ./.env
+
+networks:
+  monitor-net:
+    driver: bridge
